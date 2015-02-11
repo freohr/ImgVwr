@@ -1,5 +1,7 @@
 package Windows;
 
+import Model.ImageList;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Observable;
@@ -9,11 +11,15 @@ import java.util.Observer;
  * Created by stephen on 09/02/2015.
  */
 public class Gallery extends JFrame implements Observer{
+    public ImageList model;
+
     public JScrollPane ImagePanel;
     public JScrollPane TagPane;
 
-    public Gallery() throws HeadlessException {
-    //this.set
+    public Gallery(ImageList Model) throws HeadlessException {
+
+        this.model = Model;
+
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setTitle("Gallerie");
         this.setSize(800, 600);

@@ -11,7 +11,7 @@ public class Main {
 
         }
 
-       Gallery galerie = new Gallery();
+       Gallery galerie = new Gallery(null);
 
         galerie.setVisible(true);
     }
