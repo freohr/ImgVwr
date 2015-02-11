@@ -13,10 +13,6 @@ public class Main {
 
        Gallery galerie = new Gallery();
 
-        JLabel hello = new JLabel("Hello World!");
-
-        galerie.add(hello);
-
         galerie.setVisible(true);
     }
 }
