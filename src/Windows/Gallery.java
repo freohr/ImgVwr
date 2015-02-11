@@ -1,4 +1,4 @@
-package Gallery;
+package Windows;
 
 import javax.swing.*;
 import java.awt.*;
