@@ -10,5 +10,10 @@ public class TagEditor extends JFrame {
     public TagEditor() throws HeadlessException {
         this.setTitle("Tags");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+
+        this.setPreferredSize(new Dimension(400, 400));
+
+        this.setSize(this.getPreferredSize());
     }
 }

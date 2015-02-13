@@ -8,4 +8,12 @@ import java.awt.image.BufferedImage;
 public class Image {
     public BufferedImage file;
 
+    public Image(BufferedImage image) {
+        this.file = image;
+    }
+
+
+    public BufferedImage getThumbnail() {
+        return null;
+    }
 }
