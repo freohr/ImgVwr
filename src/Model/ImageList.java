@@ -1,6 +1,9 @@
 package Model;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Observable;
 
 /**
@@ -9,8 +12,46 @@ import java.util.Observable;
 public class ImageList extends Observable {
 
     public ArrayList<Image> ImageList;
+    public HashSet<String> tags;
 
     public ImageList() {
         ImageList = new ArrayList<>();
+    }
+
+    public ArrayList<Image> getImageList() {
+        return ImageList;
+    }
+
+    /**
+     * @param imageList
+     */
+    public void setImageList(ArrayList<Image> imageList) {
+        ImageList = imageList;
+    }
+
+    public void convertImageList(ArrayList<BufferedImage> images){
+        ImageList.clear();
+
+        images.stream().forEach(i -> ImageList.add(new Image(i)));
+
+        this.updateTags();
+
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    public void convertImageList(HashMap<String, BufferedImage> images){
+        ImageList.clear();
+
+        images.entrySet().stream().forEach(i -> ImageList.add(new Image(i.getValue(), i.getKey())));
+
+        this.updateTags();
+
+        this.setChanged();
+        this.notifyObservers();
+    }
+
+    private void updateTags(){
+        ImageList.stream().forEach(img -> img.tags.stream().forEach(tag -> tags.add(tag)));
     }
 }

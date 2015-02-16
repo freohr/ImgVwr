@@ -1,12 +1,17 @@
 package Windows;
 
 import Controler.Controller;
+import Model.Image;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -18,6 +23,7 @@ public class Gallery extends JFrame implements Observer {
 
     public JScrollPane ImagePanel;
     public JScrollPane TagPane;
+    public JFileChooser ImageChooser;
 
     public Gallery(Controller controller) throws HeadlessException {
 
@@ -41,6 +47,7 @@ public class Gallery extends JFrame implements Observer {
         pane.setMinimumSize(this.getMinimumSize());
 
         initMenu();
+        initChooser();
 
         GridBagConstraints constraints = new GridBagConstraints();
 
@@ -54,6 +61,7 @@ public class Gallery extends JFrame implements Observer {
         JScrollPane scrollPane = new JScrollPane();
         scrollPane.setSize(400, 400);
         scrollPane.setPreferredSize(new Dimension(400, 400));
+        scrollPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.ImagePanel = scrollPane;
 
         pane.add(scrollPane, constraints);
@@ -87,6 +95,10 @@ public class Gallery extends JFrame implements Observer {
         menuBar.setVisible(true);
 
         this.setJMenuBar(menuBar);
+    }
+
+    private void initChooser() {
+        this.ImageChooser = new FileChooser();
     }
 
     private JPanel initSideBar() {
@@ -143,6 +155,52 @@ public class Gallery extends JFrame implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
+        updatePreview();
+        updateTags();
+    }
+
+    private void updatePreview() {
+        ImagePanel.removeAll();
+
+        GridLayout previewLayout = new GridLayout(0, 3, 20, 20);
+        Border blackLine = BorderFactory.createLineBorder(Color.black, 1);
+
+        JPanel previews = new JPanel(previewLayout);
+        previews.setAutoscrolls(true);
+        previews.setSize(ImagePanel.getSize());
+
+        ImagePanel.add(previews);
+
+        ImagePanel.setLayout(new ScrollPaneLayout());
+        ImagePanel.setBorder(blackLine);
+
+        ArrayList<Image> images = controller.getImages();
+
+        images.stream().forEach(i -> {
+            JPanel imgTile = new JPanel(new GridLayout(2, 1));
+
+            imgTile.setSize(new Dimension(100, 100));
+            imgTile.setMinimumSize(new Dimension(100, 100));
+            imgTile.setMaximumSize(new Dimension(100, 100));
+            imgTile.setBorder(blackLine);
+
+            JLabel img = new JLabel(new ImageIcon(i.getImage().getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH)));
+            img.setSize(new Dimension(100, 80));
+
+            JLabel title = new JLabel(i.getTitle());
+
+            imgTile.add(img);
+            imgTile.add(title);
+
+            previews.add(imgTile);
+            previews.repaint();
+
+            ImagePanel.revalidate();
+            ImagePanel.repaint();
+        });
+    }
+
+    private void updateTags() {
 
     }
 
@@ -159,6 +217,17 @@ public class Gallery extends JFrame implements Observer {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+
+            int returnVal = ImageChooser.showOpenDialog(Gallery.this);
+
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File[] arrayFile = ImageChooser.getSelectedFiles();
+
+                try {
+                    controller.importImages(arrayFile);
+                } catch (Exception ex) {
+                }
+            }
         }
     }
 

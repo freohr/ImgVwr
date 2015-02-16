@@ -15,5 +15,11 @@ public class TagEditor extends JFrame {
         this.setPreferredSize(new Dimension(400, 400));
 
         this.setSize(this.getPreferredSize());
+
+        initTagWindow();
+    }
+
+    private void initTagWindow() {
+
     }
 }

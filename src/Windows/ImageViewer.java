@@ -10,7 +10,7 @@ import java.awt.*;
 /**
  * Modified by Rémy on 09/02/2015.
  */
-public class ImageViewer extends JFrame{
+public class ImageViewer extends JFrame {
 
     public ImageViewer() throws HeadlessException {
         this.setTitle("ImageViewer");
@@ -26,7 +26,6 @@ public class ImageViewer extends JFrame{
 
 
     }
-
 
 
 }
