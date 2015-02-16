@@ -59,8 +59,8 @@ public class Gallery extends JFrame implements Observer {
         constraints.gridwidth = 4;
 
         JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setSize(400, 400);
-        scrollPane.setPreferredSize(new Dimension(400, 400));
+        scrollPane.setSize(500, 500);
+        scrollPane.setPreferredSize(new Dimension(500, 500));
         scrollPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.ImagePanel = scrollPane;
 
@@ -164,6 +164,16 @@ public class Gallery extends JFrame implements Observer {
 
         GridLayout previewLayout = new GridLayout(0, 3, 20, 20);
         Border blackLine = BorderFactory.createLineBorder(Color.black, 1);
+        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints tileConstraints = new GridBagConstraints();
+
+        c.gridheight = 1;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.BOTH;
+
+        tileConstraints.gridheight = 1;
+        tileConstraints.gridwidth = 1;
+        tileConstraints.fill = GridBagConstraints.BOTH;
 
         JPanel previews = new JPanel(previewLayout);
         previews.setAutoscrolls(true);
@@ -177,7 +187,7 @@ public class Gallery extends JFrame implements Observer {
         ArrayList<Image> images = controller.getImages();
 
         images.stream().forEach(i -> {
-            JPanel imgTile = new JPanel(new GridLayout(2, 1));
+            JPanel imgTile = new JPanel(new GridBagLayout());
 
             imgTile.setSize(new Dimension(100, 100));
             imgTile.setMinimumSize(new Dimension(100, 100));
@@ -189,10 +199,16 @@ public class Gallery extends JFrame implements Observer {
 
             JLabel title = new JLabel(i.getTitle());
 
-            imgTile.add(img);
-            imgTile.add(title);
+            tileConstraints.weighty = 1.0;
+            tileConstraints.gridy = 0;
+            imgTile.add(img, tileConstraints);
 
-            previews.add(imgTile);
+            tileConstraints.weighty = 0.25;
+
+            tileConstraints.gridy = 1;
+            imgTile.add(title, tileConstraints);
+
+            previews.add(imgTile, c);
             previews.repaint();
 
             ImagePanel.revalidate();
