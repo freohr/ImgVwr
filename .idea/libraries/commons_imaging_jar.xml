@@ -1,15 +1,15 @@
 <component name="libraryTable">
   <library name="commons_imaging_jar">
     <CLASSES>
-      <root url="file://$USER_HOME$/Subversion/Apache Commons - Imaging/out/artifacts/commons_imaging_jar" />
+      <root url="file://$PROJECT_DIR$/libs/commons_imaging_jar" />
     </CLASSES>
     <JAVADOC>
       <root url="http://commons.apache.org/proper/commons-imaging/apidocs/index.html" />
     </JAVADOC>
     <SOURCES>
-      <root url="file://$USER_HOME$/Subversion/Apache Commons - Imaging/out/artifacts/commons_imaging_jar" />
+      <root url="file://$PROJECT_DIR$/libs/commons_imaging_jar" />
     </SOURCES>
-    <jarDirectory url="file://$USER_HOME$/Subversion/Apache Commons - Imaging/out/artifacts/commons_imaging_jar" recursive="false" />
-    <jarDirectory url="file://$USER_HOME$/Subversion/Apache Commons - Imaging/out/artifacts/commons_imaging_jar" recursive="false" type="SOURCES" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons_imaging_jar" recursive="false" />
+    <jarDirectory url="file://$PROJECT_DIR$/libs/commons_imaging_jar" recursive="false" type="SOURCES" />
   </library>
 </component>

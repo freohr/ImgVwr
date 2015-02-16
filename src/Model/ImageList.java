@@ -29,17 +29,6 @@ public class ImageList extends Observable {
         ImageList = imageList;
     }
 
-    public void convertImageList(ArrayList<BufferedImage> images){
-        ImageList.clear();
-
-        images.stream().forEach(i -> ImageList.add(new Image(i)));
-
-        this.updateTags();
-
-        this.setChanged();
-        this.notifyObservers();
-    }
-
     public void convertImageList(HashMap<String, BufferedImage> images){
         ImageList.clear();
 
