@@ -22,14 +22,12 @@ public class ImageList extends Observable {
         return ImageList;
     }
 
-    /**
-     * @param imageList
-     */
+/*
     public void setImageList(ArrayList<Image> imageList) {
         ImageList = imageList;
-    }
+    }*/
 
-    public void convertImageList(HashMap<String, BufferedImage> images){
+    public void convertImageList(HashMap<String, BufferedImage> images) {
         ImageList.clear();
 
         images.entrySet().stream().forEach(i -> ImageList.add(new Image(i.getValue(), i.getKey())));
@@ -40,7 +38,7 @@ public class ImageList extends Observable {
         this.notifyObservers();
     }
 
-    private void updateTags(){
+    private void updateTags() {
         ImageList.stream().forEach(img -> img.tags.stream().forEach(tag -> tags.add(tag)));
     }
 }

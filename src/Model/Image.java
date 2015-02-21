@@ -1,7 +1,6 @@
 package Model;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -52,11 +51,11 @@ public class Image {
         this.title = title;
     }
 
-    public void addTag(String tag){
+    public void addTag(String tag) {
         this.tags.add(tag);
     }
 
-    public void removeTag(String tag){
+    public void removeTag(String tag) {
         this.tags.remove(tag);
     }
 }
