@@ -177,7 +177,7 @@ public class Gallery extends JFrame implements Observer {
 
         JPanel previews = new JPanel(previewLayout);
         previews.setAutoscrolls(true);
-        previews.setSize(ImagePanel.getSize());
+        previews.setSize(ImagePanel.getSize().width, ImagePanel.getHeight()*10);
 
         ImagePanel.add(previews);
 
@@ -208,7 +208,7 @@ public class Gallery extends JFrame implements Observer {
             tileConstraints.gridy = 1;
             imgTile.add(title, tileConstraints);
 
-            previews.add(imgTile, c);
+            previews.add(imgTile);
             previews.repaint();
 
             ImagePanel.revalidate();
@@ -232,8 +232,6 @@ public class Gallery extends JFrame implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
-
             int returnVal = ImageChooser.showOpenDialog(Gallery.this);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
