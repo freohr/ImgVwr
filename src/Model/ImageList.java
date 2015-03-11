@@ -41,4 +41,8 @@ public class ImageList extends Observable {
     private void updateTags() {
         ImageList.stream().forEach(img -> img.tags.stream().forEach(tag -> tags.add(tag)));
     }
+
+    public Image getImage(String title) {
+        return ImageList.stream().filter(i -> i.title.equals(title)).findFirst().get();
+    }
 }

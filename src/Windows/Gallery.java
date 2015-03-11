@@ -6,9 +6,7 @@ import Model.Image;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -25,6 +23,11 @@ public class Gallery extends JFrame implements Observer {
     public JScrollPane TagPane;
     public JFileChooser ImageChooser;
 
+    private Border grayBorder;
+    private Border blackBorder;
+
+    private GalleryThumbnail selectedThumbnail;
+
     public Gallery(Controller controller) throws HeadlessException {
 
         this.controller = controller;
@@ -37,6 +40,11 @@ public class Gallery extends JFrame implements Observer {
         this.setMinimumSize(new Dimension(400, 300));
 
         this.initGallery();
+
+        this.addComponentListener(new ResizeListener());
+
+        this.grayBorder = BorderFactory.createLineBorder(Color.gray, 1);
+        this.blackBorder = BorderFactory.createLineBorder(Color.black, 2);
     }
 
     // Gallery Window Initilization
@@ -50,17 +58,22 @@ public class Gallery extends JFrame implements Observer {
         initChooser();
 
         GridBagConstraints constraints = new GridBagConstraints();
+        Border blackLine = BorderFactory.createLineBorder(Color.black, 1);
 
         constraints.fill = GridBagConstraints.BOTH;
+        constraints.weighty = 1;
 
         // Scrollpane
         constraints.gridx = constraints.gridy = 0;
-        constraints.gridheight = 5;
-        constraints.gridwidth = 4;
+        constraints.gridheight = constraints.gridwidth = 1;
+        constraints.weightx = 0.9;
 
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setSize(500, 500);
+
+        JScrollPane scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        /*scrollPane.setSize(500, 500);
         scrollPane.setPreferredSize(new Dimension(500, 500));
+        */
         scrollPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.ImagePanel = scrollPane;
 
@@ -70,10 +83,8 @@ public class Gallery extends JFrame implements Observer {
 
         JPanel sideBar = initSideBar();
 
-        constraints.gridy = 0;
-        constraints.gridx = 4;
-        constraints.gridheight = 5;
-        constraints.fill = GridBagConstraints.BOTH;
+        constraints.gridx = 1;
+        constraints.weightx = 0.1;
 
         pane.add(sideBar, constraints);
 
@@ -125,7 +136,8 @@ public class Gallery extends JFrame implements Observer {
         constraints.gridwidth = 1;
         constraints.gridy = 1;
 
-        JScrollPane tagPane = new JScrollPane();
+        JScrollPane tagPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         tagPane.setPreferredSize(new Dimension(100, 200));
         tagPane.setSize(tagPane.getPreferredSize());
         this.TagPane = tagPane;
@@ -162,24 +174,35 @@ public class Gallery extends JFrame implements Observer {
     private void updatePreview() {
         ImagePanel.removeAll();
 
-        GridLayout previewLayout = new GridLayout(0, 3, 20, 20);
+        JPanel loading = new JPanel();
+        loading.add(new JLabel("Chargement des images en cours"));
+
+        ImagePanel.add(loading);
+        ImagePanel.revalidate();
+        ImagePanel.repaint();
+
         Border blackLine = BorderFactory.createLineBorder(Color.black, 1);
+
+        ImagePanel.setBorder(blackLine);
+
+        GridLayout previewLayout = new GridLayout(4, 4, 20, 20);
         GridBagConstraints c = new GridBagConstraints();
         GridBagConstraints tileConstraints = new GridBagConstraints();
 
-        c.gridheight = 1;
+/*        c.gridheight = 1;
         c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;
+        c.fill = GridBagConstraints.BOTH;*/
 
         tileConstraints.gridheight = 1;
         tileConstraints.gridwidth = 1;
         tileConstraints.fill = GridBagConstraints.BOTH;
 
         JPanel previews = new JPanel(previewLayout);
-        previews.setAutoscrolls(true);
-        previews.setSize(ImagePanel.getSize().width, ImagePanel.getHeight()*10);
+        previews.setMinimumSize(ImagePanel.getSize());
+        previews.setSize(ImagePanel.getSize());
+        previews.setPreferredSize(new Dimension(ImagePanel.getWidth(), ImagePanel.getHeight() * 3));
 
-        ImagePanel.add(previews);
+        //previews.setSize(ImagePanel.getSize().width, ImagePanel.getHeight());
 
         ImagePanel.setLayout(new ScrollPaneLayout());
         ImagePanel.setBorder(blackLine);
@@ -187,12 +210,13 @@ public class Gallery extends JFrame implements Observer {
         ArrayList<Image> images = controller.getImages();
 
         images.stream().forEach(i -> {
-            JPanel imgTile = new JPanel(new GridBagLayout());
+            JPanel imgTile = new GalleryThumbnail(new GridBagLayout(), i.getTitle());
 
-            imgTile.setSize(new Dimension(100, 100));
-            imgTile.setMinimumSize(new Dimension(100, 100));
-            imgTile.setMaximumSize(new Dimension(100, 100));
-            imgTile.setBorder(blackLine);
+            imgTile.setSize(new Dimension(200, 150));
+            imgTile.setMinimumSize(new Dimension(200, 150));
+            imgTile.setPreferredSize(new Dimension(200, 150));
+            imgTile.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+            imgTile.addMouseListener(new ThumbnailHoverListener());
 
             JLabel img = new JLabel(new ImageIcon(i.getImage().getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH)));
             img.setSize(new Dimension(100, 80));
@@ -204,16 +228,18 @@ public class Gallery extends JFrame implements Observer {
             imgTile.add(img, tileConstraints);
 
             tileConstraints.weighty = 0.25;
-
             tileConstraints.gridy = 1;
             imgTile.add(title, tileConstraints);
 
             previews.add(imgTile);
-            previews.repaint();
 
-            ImagePanel.revalidate();
-            ImagePanel.repaint();
         });
+
+        previews.repaint();
+        ImagePanel.add(previews);
+
+        ImagePanel.revalidate();
+        ImagePanel.repaint();
     }
 
     private void updateTags() {
@@ -221,6 +247,19 @@ public class Gallery extends JFrame implements Observer {
     }
 
     // Events Listeners
+
+    // Frame
+
+    private class ResizeListener extends ComponentAdapter {
+        public void componentResized(ComponentEvent evt) {
+            Component c = (Component) evt.getSource();
+
+            Gallery glry = (Gallery) c;
+
+            glry.updatePreview();
+        }
+
+    }
 
     // Menu
 
@@ -240,6 +279,10 @@ public class Gallery extends JFrame implements Observer {
                 try {
                     controller.importImages(arrayFile);
                 } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(ImagePanel,
+                            "Prolème lors du chargement des images.",
+                            "Erreur de chargement",
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
@@ -261,9 +304,61 @@ public class Gallery extends JFrame implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            ImageViewer imageViewer = new ImageViewer();
 
-            imageViewer.setVisible(true);
+            if (!selectedThumbnail.equals("")) {
+
+                ImageViewer imageViewer = new ImageViewer();
+
+                Image image = controller.getImage(selectedThumbnail.getImageTitle());
+
+                imageViewer.setVisible(true);
+            }
+        }
+    }
+
+    // Thumbnails
+
+    private class ThumbnailHoverListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            GalleryThumbnail source = (GalleryThumbnail) e.getSource();
+
+            source.setBorder(Windows.Utils.Border.RED);
+
+
+            if (selectedThumbnail != null) {
+                selectedThumbnail.setSelected(false);
+            }
+
+            selectedThumbnail = source;
+            selectedThumbnail.setSelected(true);
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            GalleryThumbnail src = (GalleryThumbnail) e.getSource();
+
+            if (selectedThumbnail != src)
+                src.setBorder(Windows.Utils.Border.BLACK);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            GalleryThumbnail src = (GalleryThumbnail) e.getSource();
+
+            if (selectedThumbnail != src)
+                src.setBorder(Windows.Utils.Border.GRAY);
         }
     }
 }
