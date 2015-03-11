@@ -1,9 +1,12 @@
 package Windows;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 /**
  * Created by stephen on 09/02/2015.
@@ -19,51 +22,72 @@ public class TagEditor extends JFrame {
 
         this.setSize(this.getPreferredSize());
 
-        this.initTagWindow();
+        JPanel side = initSidebar();
+        JPanel tags = initTagWindow();
+
+        JPanel container = new JPanel(new GridBagLayout());
+        container.setSize(this.getSize());
+        GridBagConstraints c = new GridBagConstraints();
+
+        c.fill = GridBagConstraints.BOTH;
+        c.gridheight = c.gridwidth = 1;
+        c.gridx = c.gridy = 0;
+
+        c.weightx = 0.9;
+        container.add(tags, c);
+
+        c.gridx = 1;
+        c.weightx = 0.1;
+        container.add(side, c);
+
+        this.add(container);
     }
 
     private JPanel initTagWindow() {
+
+        JPanel tags = new JPanel();
+
+        Border black = BorderFactory.createLineBorder(Color.lightGray, 1);
+        tags.setBorder(black);
+
+        return tags;
+    }
+
+    private JPanel initSidebar() {
         JPanel sideBar = new JPanel(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = c.gridy = 0;
-        c.gridheight = 10;
-        c.gridwidth = 10;
-
-
         c.gridheight = 1;
-        c.gridwidth = 2;
-        c.gridx = 8;
-        c.gridy = 3;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.BOTH;
+
+        // Add Button
         JButton addButton = new JButton();
         addButton.setText("Add a Tag");
         addButton.addActionListener(new addButtonListener());
 
         sideBar.add(addButton, c);
 
-        c.gridheight = 1;
-        c.gridwidth = 2;
-        c.gridx = 8;
-        c.gridy = 4;
+        // Edit Button
         JButton saveButton = new JButton();
-        saveButton.setText("Save");
+        saveButton.setText("Edit tag");
         saveButton.addActionListener(new saveButtonListener());
 
+        c.gridy = 1;
         sideBar.add(saveButton, c);
 
-        c.gridheight = 1;
-        c.gridwidth = 2;
-        c.gridx = 8;
-        c.gridy = 5;
+        // Delete Button
+
         JButton deleteButton = new JButton();
-        deleteButton.setText("Deletes Tag");
+        deleteButton.setText("Delete Tag");
         deleteButton.addActionListener(new deleteButtonListener());
 
+        c.gridy = 2;
         sideBar.add(deleteButton, c);
 
         return sideBar;
-
     }
 
     private class addButtonListener implements ActionListener {
@@ -86,6 +110,34 @@ public class TagEditor extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+        }
+    }
+
+    private class TagClickListener implements MouseListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
 
         }
     }
