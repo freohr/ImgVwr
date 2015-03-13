@@ -34,6 +34,7 @@ public class TagEditor extends JFrame {
         c.gridx = c.gridy = 0;
 
         c.weightx = 0.9;
+        c.weighty = 1;
         container.add(tags, c);
 
         c.gridx = 1;
