@@ -1,5 +1,7 @@
 package Windows;
 
+import Windows.Utils.InternationalButton;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -65,24 +67,20 @@ public class TagEditor extends JFrame {
         c.fill = GridBagConstraints.BOTH;
 
         // Add Button
-        JButton addButton = new JButton();
-        addButton.setText("Add a Tag");
+        JButton addButton = new InternationalButton("addTag");
         addButton.addActionListener(new addButtonListener());
 
         sideBar.add(addButton, c);
 
         // Edit Button
-        JButton saveButton = new JButton();
-        saveButton.setText("Edit tag");
+        JButton saveButton = new InternationalButton("editTag");
         saveButton.addActionListener(new saveButtonListener());
 
         c.gridy = 1;
         sideBar.add(saveButton, c);
 
         // Delete Button
-
-        JButton deleteButton = new JButton();
-        deleteButton.setText("Delete Tag");
+        JButton deleteButton = new InternationalButton("deleteTag");
         deleteButton.addActionListener(new deleteButtonListener());
 
         c.gridy = 2;

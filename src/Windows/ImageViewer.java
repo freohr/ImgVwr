@@ -12,9 +12,13 @@ import java.awt.*;
  */
 public class ImageViewer extends JFrame {
 
-    public ImageViewer() throws HeadlessException {
+    private String ImageName;
+
+    public ImageViewer(String Image) throws HeadlessException {
         this.setTitle("ImageViewer");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        this.ImageName = Image;
 
         this.setPreferredSize(new Dimension(400, 400));
         this.setSize(this.getPreferredSize());
@@ -27,5 +31,15 @@ public class ImageViewer extends JFrame {
 
     }
 
+    private void initDtails() {
 
+    }
+
+    public String getImageName() {
+        return ImageName;
+    }
+
+    public void setImageName(String imageName) {
+        ImageName = imageName;
+    }
 }

@@ -2,6 +2,8 @@ package Windows;
 
 import Controler.Controller;
 import Model.Image;
+import Windows.Utils.InternationalButton;
+import Windows.Utils.InternationalLabel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -22,6 +24,9 @@ public class Gallery extends JFrame implements Observer {
     public JScrollPane ImagePanel;
     public JScrollPane TagPane;
     public JFileChooser ImageChooser;
+
+    private ArrayList<InternationalButton> buttons = new ArrayList<>();
+    private ArrayList<InternationalLabel> labels = new ArrayList<>();
 
     private Border grayBorder;
     private Border blackBorder;
@@ -147,18 +152,20 @@ public class Gallery extends JFrame implements Observer {
         //Edit Properties
         constraints.gridheight = constraints.gridwidth = 1;
         constraints.gridy = 3;
-        JButton properties = new JButton();
-        properties.setText("Edit Properties");
+        InternationalButton properties = new InternationalButton("editProperties");
         properties.addActionListener(new PropertiesButtonListener());
+
+        buttons.add(properties);
 
         side.add(properties, constraints);
 
         //Edit Tags
         constraints.gridheight = constraints.gridwidth = 1;
         constraints.gridy = 4;
-        JButton tags = new JButton();
-        tags.setText("Edit Tags");
+        InternationalButton tags = new InternationalButton("editTags");
         tags.addActionListener(new TagButtonListener());
+
+        buttons.add(tags);
 
         side.add(tags, constraints);
 
@@ -175,7 +182,7 @@ public class Gallery extends JFrame implements Observer {
         ImagePanel.removeAll();
 
         JPanel loading = new JPanel();
-        loading.add(new JLabel("Chargement des images en cours"));
+        //loading.add(new JLabel("Chargement des images en cours"));
 
         ImagePanel.add(loading);
         ImagePanel.revalidate();
@@ -306,10 +313,9 @@ public class Gallery extends JFrame implements Observer {
         public void actionPerformed(ActionEvent e) {
 
             if (!selectedThumbnail.equals("")) {
-
-                ImageViewer imageViewer = new ImageViewer();
-
                 Image image = controller.getImage(selectedThumbnail.getImageTitle());
+
+                ImageViewer imageViewer = new ImageViewer(image.getTitle());
 
                 imageViewer.setVisible(true);
             }
