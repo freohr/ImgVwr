@@ -14,7 +14,6 @@ public class FileChooser extends JFileChooser {
     public FileChooser() {
         super();
 
-
         this.setMultiSelectionEnabled(true);
         this.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 

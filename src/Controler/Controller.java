@@ -2,6 +2,7 @@ package Controler;
 
 import Model.Image;
 import Model.ImageList;
+import Resources.Languages;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 
@@ -10,12 +11,33 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by stephen on 11/02/2015.
  */
 public class Controller {
     public ImageList Model;
+    public static Locale currentLocale;
+
+    static {
+        currentLocale = Locale.US;
+    }
+
+    public static void setCurrentLocale(Languages language) {
+        switch (language) {
+            case ENGLISH:
+                currentLocale = Locale.US;
+                break;
+            case FRENCH:
+                currentLocale = Locale.FRANCE;
+                break;
+        }
+    }
+
+    public static Locale getCurrentLocale() {
+        return currentLocale;
+    }
 
     public Controller(ImageList model) {
         Model = model;
