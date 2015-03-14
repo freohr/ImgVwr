@@ -13,6 +13,11 @@ import java.awt.event.MouseListener;
 /**
  * Created by stephen on 09/02/2015.
  */
+
+/**
+ * modified by remy on 12/02/2015.
+ */
+
 public class TagEditor extends JFrame {
 
 
