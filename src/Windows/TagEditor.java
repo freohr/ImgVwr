@@ -1,6 +1,6 @@
 package Windows;
 
-import Windows.Utils.InternationalButton;
+import Windows.International.InternationalButton;
 
 import javax.swing.*;
 import javax.swing.border.Border;

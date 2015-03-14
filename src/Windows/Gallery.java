@@ -2,8 +2,8 @@ package Windows;
 
 import Controler.Controller;
 import Model.Image;
-import Windows.Utils.InternationalButton;
-import Windows.Utils.InternationalLabel;
+import Resources.Languages;
+import Windows.International.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -25,8 +25,7 @@ public class Gallery extends JFrame implements Observer {
     public JScrollPane TagPane;
     public JFileChooser ImageChooser;
 
-    private ArrayList<InternationalButton> buttons = new ArrayList<>();
-    private ArrayList<InternationalLabel> labels = new ArrayList<>();
+    private ArrayList<InternationalComponent> components = new ArrayList<>();
 
     private Border grayBorder;
     private Border blackBorder;
@@ -100,13 +99,36 @@ public class Gallery extends JFrame implements Observer {
     private void initMenu() {
         // MenuBar
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Files");
-        JMenuItem loadFiles = new JMenuItem(new OpenFileListener());
+
+        // Menu Fichiers
+        InternationalMenu menu = new InternationalMenu("file");
+
+        InternationalMenuItem loadFiles = new InternationalMenuItem("open", new OpenFileListener());
         loadFiles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 
+        InternationalMenuItem close = new InternationalMenuItem("exit", new ExitAppListener());
+
         menu.add(loadFiles);
+        menu.add(close);
 
         menuBar.add(menu);
+
+        // Menu Langues
+        InternationalMenu langues = new InternationalMenu("languages");
+
+        InternationalRadioMenuItem frFR = new InternationalRadioMenuItem("french", Languages.FRENCH, new ChangeLanguageListener());
+        langues.add(frFR);
+
+        InternationalRadioMenuItem enUS = new InternationalRadioMenuItem(true, "english", Languages.ENGLISH, new ChangeLanguageListener());
+        langues.add(enUS);
+
+        // Ajout dans l'array de localization
+        components.add(menu);
+        components.add(loadFiles);
+        components.add(close);
+        components.add(langues);
+        components.add(frFR);
+        components.add(enUS);
 
         menuBar.setVisible(true);
 
@@ -155,7 +177,7 @@ public class Gallery extends JFrame implements Observer {
         InternationalButton properties = new InternationalButton("editProperties");
         properties.addActionListener(new PropertiesButtonListener());
 
-        buttons.add(properties);
+        components.add(properties);
 
         side.add(properties, constraints);
 
@@ -165,7 +187,7 @@ public class Gallery extends JFrame implements Observer {
         InternationalButton tags = new InternationalButton("editTags");
         tags.addActionListener(new TagButtonListener());
 
-        buttons.add(tags);
+        components.add(tags);
 
         side.add(tags, constraints);
 
@@ -253,6 +275,13 @@ public class Gallery extends JFrame implements Observer {
 
     }
 
+    private void updateLabels() {
+        components.stream().forEach(c -> {
+            c.updateText();
+            c.repaint();
+        });
+    }
+
     // Events Listeners
 
     // Frame
@@ -271,11 +300,6 @@ public class Gallery extends JFrame implements Observer {
     // Menu
 
     private class OpenFileListener extends AbstractAction {
-
-        public OpenFileListener() {
-            super("Load Pictures");
-        }
-
         @Override
         public void actionPerformed(ActionEvent e) {
             int returnVal = ImageChooser.showOpenDialog(Gallery.this);
@@ -292,6 +316,26 @@ public class Gallery extends JFrame implements Observer {
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
+        }
+    }
+
+    private class ChangeLanguageListener extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            InternationalRadioMenuItem source = (InternationalRadioMenuItem) e.getSource();
+
+            Controller.setCurrentLocale(source.getLanguage());
+
+            updateLabels();
+        }
+    }
+
+    private class ExitAppListener extends AbstractAction {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            System.exit(0);
         }
     }
 
