@@ -74,9 +74,39 @@ public class TagEditor extends JFrame {
     }
 
     private JPanel initSidebar() {
+
+        JPanel controls = new JPanel(new GridBagLayout());
+
+        //1/2 panels tags
+        JPanel tagsPanel = new JPanel(new GridBagLayout());
+        GridBagConstraints c = new GridBagConstraints();
+
+        InternationalLabel descriptionLabel = new InternationalLabel("tags");
+        c.gridy = c.gridx = 0;
+        c.weighty = 0.2;
+
+        tagsPanel.add(descriptionLabel, c);
+
+        JTextArea tagsTextArea = new JTextArea();
+        //controller.getImage(getImageName()).getTags();
+        tagsArea = tagsTextArea;
+
+        c.gridy = 1;
+        c.weighty = 0.8;
+
+        tagsPanel.add(tagsTextArea, c);
+
+
+        c.gridx = 0;
+        c.gridy = 0;
+        c.weighty = c.weightx = 1;
+
+        controls.add(tagsPanel, c);
+
+        //2/2 panel buttons
         JPanel sideBar = new JPanel(new GridBagLayout());
 
-        GridBagConstraints c = new GridBagConstraints();
+
 
         c.gridx = c.gridy = 0;
         c.gridheight = 1;
@@ -103,28 +133,11 @@ public class TagEditor extends JFrame {
         c.gridy = 2;
         sideBar.add(deleteButton, c);
 
-        JPanel descriptionPanel = new JPanel(new GridBagLayout());
-
-        InternationalLabel descriptionLabel = new InternationalLabel("description");
-        c.gridy = c.gridx = 0;
-        c.weighty = 0.2;
-
-        descriptionPanel.add(descriptionLabel, c);
-
-        JTextArea tagsTextArea = new JTextArea();
-        controller.getImage(getImageName()).getTags()
-        tagsArea = tagsTextArea;
-
-        c.gridy = 1;
-        c.weighty = 0.8;
-
-        descriptionPanel.add(tagsTextArea, c);
-
         c.gridx = 1;
         c.gridy = 0;
-        c.weighty = c.weightx = 1;
+        c.weighty = c.weightx = ;
 
-        sideBar.add(descriptionPanel, c);
+        controls.add(sideBar, c);
 
         return sideBar;
     }
