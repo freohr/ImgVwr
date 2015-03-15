@@ -1,5 +1,6 @@
 package Windows;
 
+import Controler.Controller;
 import Windows.International.InternationalButton;
 
 import javax.swing.*;
@@ -9,7 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
+import java.util.ResourceBundle;
 
 
 /**
@@ -21,10 +22,11 @@ import java.awt.event.MouseListener;
  */
 
 public class TagEditor extends JFrame {
+    private static final String localizationKey = "tags";
 
 
     public TagEditor() throws HeadlessException {
-        this.setTitle("Tags");
+        this.setTitle(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(localizationKey));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.setPreferredSize(new Dimension(400, 400));
