@@ -99,7 +99,7 @@ public class TagEditor extends JFrame {
 
         c.gridx = 0;
         c.gridy = 0;
-        c.weighty = c.weightx = 1;
+        c.weighty = c.weightx = 0.8;
 
         controls.add(tagsPanel, c);
 
@@ -135,7 +135,7 @@ public class TagEditor extends JFrame {
 
         c.gridx = 1;
         c.gridy = 0;
-        c.weighty = c.weightx = ;
+        c.weighty = c.weightx = 0.2;
 
         controls.add(sideBar, c);
 
