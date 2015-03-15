@@ -128,6 +128,10 @@ public class Gallery extends JFrame implements Observer {
         langues.add(enUS);
         groupLangues.add(enUS);
 
+        InternationalRadioMenuItem jpJP = new InternationalRadioMenuItem(true, "japanese", Languages.JAPANESE, new ChangeLanguageListener());
+        langues.add(jpJP);
+        groupLangues.add(jpJP);
+
         menuBar.add(langues);
 
         // Ajout dans l'array de localization
@@ -371,7 +375,7 @@ public class Gallery extends JFrame implements Observer {
             if (!selectedThumbnail.equals("")) {
                 Image image = controller.getImage(selectedThumbnail.getImageTitle());
 
-                ImageViewer imageViewer = new ImageViewer(image.getTitle());
+                ImageViewer imageViewer = new ImageViewer(image.getTitle(), controller);
 
                 imageViewer.setVisible(true);
             }

@@ -24,8 +24,14 @@ import java.util.ResourceBundle;
 public class TagEditor extends JFrame {
     private static final String localizationKey = "tags";
 
+    private final String imageName;
+    private Controller controller;
 
-    public TagEditor() throws HeadlessException {
+
+    public TagEditor(String imageName, Controller controller) throws HeadlessException {
+        this.imageName = imageName;
+        this.controller = controller;
+
         this.setTitle(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(localizationKey));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
