@@ -30,6 +30,9 @@ public class Gallery extends JFrame implements Observer {
 
     private ArrayList<InternationalComponent> components = new ArrayList<>();
 
+    private JButton PropertiesButton;
+    private JButton TagsButtons;
+
     private Border grayBorder;
     private Border blackBorder;
 
@@ -50,8 +53,8 @@ public class Gallery extends JFrame implements Observer {
 
         this.addComponentListener(new ResizeListener());
 
-        this.grayBorder = BorderFactory.createLineBorder(Color.gray, 1);
-        this.blackBorder = BorderFactory.createLineBorder(Color.black, 2);
+        this.grayBorder = BorderFactory.createEtchedBorder(Color.gray, Color.LIGHT_GRAY);
+        this.blackBorder = BorderFactory.createEtchedBorder(Color.black, Color.gray);
     }
 
     // Gallery Window Initilization
@@ -65,10 +68,11 @@ public class Gallery extends JFrame implements Observer {
         initChooser();
 
         GridBagConstraints constraints = new GridBagConstraints();
-        Border blackLine = BorderFactory.createLineBorder(Color.black, 1);
 
         constraints.fill = GridBagConstraints.BOTH;
         constraints.weighty = 1;
+
+        constraints.insets = new Insets(5, 5, 5, 5);
 
         // Scrollpane
         constraints.gridx = constraints.gridy = 0;
@@ -78,11 +82,28 @@ public class Gallery extends JFrame implements Observer {
 
         JScrollPane scrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        /*scrollPane.setSize(500, 500);
-        scrollPane.setPreferredSize(new Dimension(500, 500));
-        */
+
+        scrollPane.setLayout(new ScrollPaneLayout());
+
+        scrollPane.setBorder(grayBorder);
+
         scrollPane.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
         this.ImagePanel = scrollPane;
+
+        InternationalButton openFilesButton = new InternationalButton("open");
+        openFilesButton.setAction(new OpenFileListener("open"));
+
+        constraints.insets = new Insets(10, 10, 10, 10);
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+
+        buttonPanel.add(openFilesButton, constraints);
+
+        scrollPane.add(buttonPanel);
+
+        scrollPane.revalidate();
+        scrollPane.repaint();
+
+        constraints.insets = new Insets(5, 5, 5, 5);
 
         pane.add(scrollPane, constraints);
 
@@ -95,6 +116,8 @@ public class Gallery extends JFrame implements Observer {
 
         pane.add(sideBar, constraints);
 
+        pane.setBorder(grayBorder);
+
         pane.setVisible(true);
         this.add(pane);
     }
@@ -106,7 +129,7 @@ public class Gallery extends JFrame implements Observer {
         // Menu Fichiers
         InternationalMenu menu = new InternationalMenu("file");
 
-        InternationalMenuItem loadFiles = new InternationalMenuItem("open", new OpenFileListener());
+        InternationalMenuItem loadFiles = new InternationalMenuItem("open", new OpenFileListener("open"));
         loadFiles.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 
         InternationalMenuItem close = new InternationalMenuItem("exit", new ExitAppListener());
@@ -159,18 +182,24 @@ public class Gallery extends JFrame implements Observer {
 
         // Contraintes communes
         constraints.gridx = 0;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weighty = constraints.weightx = 1;
+        constraints.insets = new Insets(5, 5, 5, 5);
 
+        // Panel Tags
+
+        JPanel tagPanel = new JPanel(new GridBagLayout());
 
         // Label "by tag"
         constraints.gridheight = constraints.gridwidth = 1;
         constraints.gridy = 0;
+        constraints.weighty = 0.1;
 
         InternationalLabel filters = new InternationalLabel("filterTags");
 
         components.add(filters);
 
-        side.add(filters, constraints);
+        tagPanel.add(filters, constraints);
 
         // Panel "choose tags"
         constraints.gridheight = 2;
@@ -183,13 +212,27 @@ public class Gallery extends JFrame implements Observer {
         tagPane.setSize(tagPane.getPreferredSize());
         this.TagPane = tagPane;
 
-        side.add(tagPane, constraints);
+        constraints.weighty = 2;
+
+        tagPanel.add(tagPane, constraints);
+
+        constraints.weighty = 1.5;
+
+        side.add(tagPanel, constraints);
+
+        constraints.weighty = 0.5;
+
+        constraints.insets = new Insets(15, 15, 15, 15);
+        constraints.fill = GridBagConstraints.BOTH;
 
         //Edit Properties
         constraints.gridheight = constraints.gridwidth = 1;
         constraints.gridy = 3;
         InternationalButton properties = new InternationalButton("editProperties");
         properties.addActionListener(new PropertiesButtonListener());
+        properties.setEnabled(false);
+
+        PropertiesButton = properties;
 
         components.add(properties);
 
@@ -199,7 +242,10 @@ public class Gallery extends JFrame implements Observer {
         constraints.gridheight = constraints.gridwidth = 1;
         constraints.gridy = 4;
         InternationalButton tags = new InternationalButton("editTags");
+        tags.setEnabled(false);
         tags.addActionListener(new TagButtonListener());
+
+        TagsButtons = tags;
 
         components.add(tags);
 
@@ -232,10 +278,6 @@ public class Gallery extends JFrame implements Observer {
         GridBagConstraints c = new GridBagConstraints();
         GridBagConstraints tileConstraints = new GridBagConstraints();
 
-/*        c.gridheight = 1;
-        c.gridwidth = 1;
-        c.fill = GridBagConstraints.BOTH;*/
-
         tileConstraints.gridheight = 1;
         tileConstraints.gridwidth = 1;
         tileConstraints.fill = GridBagConstraints.BOTH;
@@ -244,8 +286,6 @@ public class Gallery extends JFrame implements Observer {
         previews.setMinimumSize(ImagePanel.getSize());
         previews.setSize(ImagePanel.getSize());
         previews.setPreferredSize(new Dimension(ImagePanel.getWidth(), ImagePanel.getHeight() * 3));
-
-        //previews.setSize(ImagePanel.getSize().width, ImagePanel.getHeight());
 
         ImagePanel.setLayout(new ScrollPaneLayout());
         ImagePanel.setBorder(blackLine);
@@ -258,7 +298,7 @@ public class Gallery extends JFrame implements Observer {
             imgTile.setSize(new Dimension(200, 150));
             imgTile.setMinimumSize(new Dimension(200, 150));
             imgTile.setPreferredSize(new Dimension(200, 150));
-            imgTile.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+            imgTile.setBorder(grayBorder);
             imgTile.addMouseListener(new ThumbnailHoverListener());
 
             JLabel img = new JLabel(new ImageIcon(Scalr.resize(i.getImage(), 100)));
@@ -316,6 +356,10 @@ public class Gallery extends JFrame implements Observer {
     // Menu
 
     private class OpenFileListener extends AbstractAction {
+        public OpenFileListener(String name) {
+            super(name);
+        }
+
         @Override
         public void actionPerformed(ActionEvent e) {
             int returnVal = ImageChooser.showOpenDialog(Gallery.this);
@@ -325,6 +369,8 @@ public class Gallery extends JFrame implements Observer {
 
                 try {
                     controller.importImages(arrayFile);
+
+
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(ImagePanel,
                             "Prolème lors du chargement des images.",
@@ -395,6 +441,8 @@ public class Gallery extends JFrame implements Observer {
 
             source.setBorder(Windows.Utils.Border.RED);
 
+            PropertiesButton.setEnabled(true);
+            TagsButtons.setEnabled(true);
 
             if (selectedThumbnail != null) {
                 selectedThumbnail.setSelected(false);

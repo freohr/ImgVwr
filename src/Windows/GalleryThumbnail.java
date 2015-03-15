@@ -21,15 +21,15 @@ public class GalleryThumbnail extends JPanel {
     public void setBorder(Border border) {
         switch (border) {
             case BLACK:
-                this.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+                this.setBorder(BorderFactory.createEtchedBorder(Color.GRAY, Color.black));
                 break;
 
             case GRAY:
-                this.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
+                this.setBorder(BorderFactory.createEtchedBorder(Color.lightGray, Color.gray));
                 break;
 
             case RED:
-                this.setBorder(BorderFactory.createLineBorder(Color.red, 2));
+                this.setBorder(BorderFactory.createEtchedBorder(Color.red, Color.red));
                 break;
         }
     }

@@ -7,6 +7,7 @@ import Windows.International.InternationalLabel;
 import org.imgscalr.Scalr;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +37,7 @@ public class ImageViewer extends JFrame {
 
         this.setPreferredSize(new Dimension(800, 600));
         this.setSize(this.getPreferredSize());
+        this.setMinimumSize(this.getPreferredSize());
 
         this.initViewer();
     }
@@ -45,29 +47,38 @@ public class ImageViewer extends JFrame {
         back.setMinimumSize(this.getMinimumSize());
         back.setPreferredSize(this.getPreferredSize());
 
-        JPanel imagePanel = new JPanel();
+        JPanel imagePanel = new JPanel(new GridBagLayout());
+        imagePanel.setPreferredSize(this.getPreferredSize());
 
         Image image = controller.getImage(getImageName());
-        JLabel imageView = new JLabel(new ImageIcon(Scalr.resize(image.getImage(), 500)));
+        JLabel imageView = new JLabel(new ImageIcon(Scalr.resize(image.getImage(), (int) (800 * 0.6))));
 
-        imagePanel.add(imageView);
+
 
         GridBagConstraints constraints = new GridBagConstraints();
 
         constraints.gridwidth = constraints.gridheight = 1;
         constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1;
 
         constraints.gridx = 0;
         constraints.gridy = 0;
 
+        imagePanel.add(imageView, constraints);
+        imagePanel.setBorder(BorderFactory.createEtchedBorder());
+
         constraints.weighty = 0.7;
+
 
         back.add(imagePanel, constraints);
 
         constraints.gridy = 1;
         constraints.weighty = 0.3;
 
-        back.add(initControls(), constraints);
+        JPanel controls = initControls();
+        controls.setPreferredSize(this.getPreferredSize());
+
+        back.add(controls, constraints);
 
         this.add(back);
     }
@@ -76,8 +87,12 @@ public class ImageViewer extends JFrame {
         JPanel controls = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
 
+        Insets insets5 = new Insets(5, 5, 5, 5);
+
         constraints.fill = GridBagConstraints.BOTH;
         constraints.gridheight = constraints.gridwidth = 1;
+        constraints.insets = insets5;
+        Border etched = BorderFactory.createEtchedBorder();
 
 
         // Panneau titre (1/3)
@@ -85,14 +100,14 @@ public class ImageViewer extends JFrame {
         InternationalLabel imageTitleLabel = new InternationalLabel("imageTitle");
 
         constraints.gridy = constraints.gridx = 0;
-        constraints.weighty = 0.2;
+        constraints.weighty = 0.1;
 
         titlePanel.add(imageTitleLabel, constraints);
 
         JLabel imageTitle = new JLabel(this.getImageName());
 
         constraints.gridy = 1;
-        constraints.weighty = 0.8;
+        constraints.weighty = 1.5;
 
         titlePanel.add(imageTitle, constraints);
 
@@ -100,6 +115,7 @@ public class ImageViewer extends JFrame {
         constraints.gridy = 0;
         constraints.weighty = constraints.weightx = 1;
 
+        titlePanel.setBorder(etched);
         controls.add(titlePanel, constraints);
 
         // Panneau Description (2/3)
@@ -108,22 +124,26 @@ public class ImageViewer extends JFrame {
 
         InternationalLabel descriptionLabel = new InternationalLabel("description");
         constraints.gridy = constraints.gridx = 0;
-        constraints.weighty = 0.2;
+        constraints.weighty = 0.1;
 
         descriptionPanel.add(descriptionLabel, constraints);
 
         JTextArea descriptionTextArea = new JTextArea(controller.getImage(getImageName()).getDescription());
         descriptionArea = descriptionTextArea;
+        descriptionTextArea.setBorder(etched);
 
         constraints.gridy = 1;
-        constraints.weighty = 0.8;
+        constraints.weighty = 1.5;
 
         descriptionPanel.add(descriptionTextArea, constraints);
 
         constraints.gridx = 1;
         constraints.gridy = 0;
-        constraints.weighty = constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.weightx = 1.5;
 
+
+        descriptionPanel.setBorder(etched);
         controls.add(descriptionPanel, constraints);
 
         // Panneau Tags (3/3)
@@ -133,36 +153,45 @@ public class ImageViewer extends JFrame {
         InternationalLabel tagLabel = new InternationalLabel("tags");
 
         constraints.gridy = constraints.gridx = 0;
-        constraints.weighty = 0.2;
+        constraints.weighty = 0.1;
         tagPanel.add(tagLabel, constraints);
 
         JPanel tagList = new JPanel();
         tagList.add(new InternationalLabel("tagList"));
 
         constraints.gridy = 1;
-        constraints.weighty = 0.8;
+        constraints.weighty = 1.5;
+        tagList.setBorder(etched);
         tagPanel.add(tagList, constraints);
 
         constraints.gridx = 2;
         constraints.gridy = 0;
         constraints.weighty = constraints.weightx = 1;
 
+        tagPanel.setBorder(etched);
         controls.add(tagPanel, constraints);
 
-        // Panneau Boutons
+        // Panneau Boutons (4/3)
 
         JPanel controlButtonsPanal = new JPanel(new GridBagLayout());
 
+        Dimension buttonSize = new Dimension(50, 10);
+        Insets insets50 = new Insets(15, 15, 15, 15);
+
         InternationalButton saveButton = new InternationalButton("save");
         saveButton.addActionListener(new SaveButtonListener());
+        saveButton.setSize(buttonSize);
 
         constraints.gridx = 0;
         constraints.gridy = 0;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.insets = insets50;
 
         controlButtonsPanal.add(saveButton, constraints);
 
         InternationalButton cancelButton = new InternationalButton("cancel");
         cancelButton.addActionListener(new CancelButtonListener());
+        cancelButton.setSize(buttonSize);
 
         constraints.gridx = 0;
         constraints.gridy = 1;
@@ -172,9 +201,12 @@ public class ImageViewer extends JFrame {
         constraints.gridx = 3;
         constraints.gridy = 0;
         constraints.weighty = constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.insets = insets5;
 
         controls.add(controlButtonsPanal, constraints);
 
+        controls.setBorder(etched);
         return controls;
     }
 

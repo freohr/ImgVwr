@@ -34,7 +34,7 @@ public class InternationalButton extends JButton implements InternationalCompone
 
     @Override
     public void setText(String key) {
-        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key));
+        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key == null || key == "" ? "default" : key));
     }
 
     public void updateText() {
