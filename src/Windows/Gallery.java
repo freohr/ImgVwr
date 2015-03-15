@@ -159,7 +159,9 @@ public class Gallery extends JFrame implements Observer {
         constraints.gridheight = constraints.gridwidth = 1;
         constraints.gridy = 0;
 
-        JLabel filters = new JLabel("Filter by tag");
+        InternationalLabel filters = new InternationalLabel("filterTags");
+
+        components.add(filters);
 
         side.add(filters, constraints);
 

@@ -6,4 +6,5 @@ package Resources;
 public enum Languages {
     FRENCH,
     ENGLISH,
+    JAPANESE
 }

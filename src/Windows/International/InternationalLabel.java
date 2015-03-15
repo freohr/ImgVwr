@@ -46,7 +46,7 @@ public class InternationalLabel extends JLabel implements InternationalComponent
 
     @Override
     public void setText(String key) {
-        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key));
+        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key == null || key.equals("") ? "default" : localizationKey));
     }
 
     public void updateText() {
