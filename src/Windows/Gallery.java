@@ -4,12 +4,12 @@ import Controler.Controller;
 import Model.Image;
 import Resources.Languages;
 import Windows.International.*;
+import org.imgscalr.Scalr;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -261,7 +261,7 @@ public class Gallery extends JFrame implements Observer {
             imgTile.setBorder(BorderFactory.createLineBorder(Color.gray, 1));
             imgTile.addMouseListener(new ThumbnailHoverListener());
 
-            JLabel img = new JLabel(new ImageIcon(i.getImage().getScaledInstance(80, 80, BufferedImage.SCALE_SMOOTH)));
+            JLabel img = new JLabel(new ImageIcon(Scalr.resize(i.getImage(), 100)));
             img.setSize(new Dimension(100, 80));
 
             JLabel title = new JLabel(i.getTitle());
@@ -361,9 +361,12 @@ public class Gallery extends JFrame implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            TagEditor tagEditor = new TagEditor();
+            if (selectedThumbnail != null) {
+                TagEditor tagEditor = new TagEditor(selectedThumbnail.getImageTitle(), controller);
 
-            tagEditor.setVisible(true);
+                tagEditor.setVisible(true);
+            }
+
         }
     }
 
@@ -372,10 +375,10 @@ public class Gallery extends JFrame implements Observer {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            if (!selectedThumbnail.equals("")) {
-                Image image = controller.getImage(selectedThumbnail.getImageTitle());
+            if (selectedThumbnail != null) {
+                //Image image = controller.getImage(selectedThumbnail.getImageTitle());
 
-                ImageViewer imageViewer = new ImageViewer(image.getTitle(), controller);
+                ImageViewer imageViewer = new ImageViewer(selectedThumbnail.getImageTitle(), controller);
 
                 imageViewer.setVisible(true);
             }
