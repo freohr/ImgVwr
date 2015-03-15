@@ -93,6 +93,7 @@ public class Image implements JSONString {
         WriteToFile();
     }
 
+
     public void setTitle(String title) {
         this.title = title;
     }
