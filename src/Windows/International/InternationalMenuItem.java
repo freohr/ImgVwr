@@ -33,12 +33,16 @@ public class InternationalMenuItem extends JMenuItem implements InternationalCom
     public InternationalMenuItem(String key, Action actionlistener) {
         this(key);
         this.setAction(actionlistener);
+        this.updateText();
     }
 
     // Getters & Setters
 
     public String getLocalizationKey() {
-        return localizationKey;
+        if (localizationKey == null || localizationKey.equals(""))
+            return "default";
+        else
+            return localizationKey;
     }
 
     public void setLocalizationKey(String localizationKey) {
@@ -48,10 +52,15 @@ public class InternationalMenuItem extends JMenuItem implements InternationalCom
     // Methods
 
     public void setText(String key) {
-        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key));
+        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key == null || key.equals("") ? "default" : key));
     }
 
     public void updateText() {
         this.setText(localizationKey);
+    }
+
+    @Override
+    protected void init(String text, Icon icon) {
+        super.init(getLocalizationKey(), icon);
     }
 }

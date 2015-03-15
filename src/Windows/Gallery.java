@@ -115,12 +115,17 @@ public class Gallery extends JFrame implements Observer {
 
         // Menu Langues
         InternationalMenu langues = new InternationalMenu("languages");
+        ButtonGroup groupLangues = new ButtonGroup();
 
         InternationalRadioMenuItem frFR = new InternationalRadioMenuItem("french", Languages.FRENCH, new ChangeLanguageListener());
         langues.add(frFR);
+        groupLangues.add(frFR);
 
         InternationalRadioMenuItem enUS = new InternationalRadioMenuItem(true, "english", Languages.ENGLISH, new ChangeLanguageListener());
         langues.add(enUS);
+        groupLangues.add(enUS);
+
+        menuBar.add(langues);
 
         // Ajout dans l'array de localization
         components.add(menu);

@@ -45,11 +45,13 @@ public class InternationalRadioMenuItem extends JRadioButtonMenuItem implements 
     public InternationalRadioMenuItem(String localizationKey, Languages option, Action action) {
         this(localizationKey, option);
         this.setAction(action);
+        this.updateText();
     }
 
     public InternationalRadioMenuItem(boolean selected, String localizationKey, Languages option, Action action) {
         this(selected, localizationKey, option);
         this.setAction(action);
+        this.updateText();
     }
 
     public String getLocalizationKey() {
@@ -62,7 +64,7 @@ public class InternationalRadioMenuItem extends JRadioButtonMenuItem implements 
 
     @Override
     public void setText(String key) {
-        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key));
+        super.setText(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(key == null || key.equals("") ? "default" : key));
     }
 
     @Override
