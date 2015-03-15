@@ -42,7 +42,7 @@ public class Controller {
                 FontChanger.setUIFont(new FontUIResource(new Font("Tahoma", 0, 20)));
                 break;
             case JAPANESE:
-            //ça bugguai j'ai mis en comment
+                //ça bugguai j'ai mis en comment
                 currentLocale = Locale.JAPAN;
                 FontChanger.setUIFont(new FontUIResource(new Font("BokutachinoGothic2Regular", 0, 20)));
                 break;
@@ -82,7 +82,10 @@ public class Controller {
 
     public Image getImage(String title) {
         return Model.getImage(title);
+    }
 
+    public void saveImageDescription(String imageTitle, String Description) {
+        Model.getImage(imageTitle).setDescription(Description);
     }
 
 }

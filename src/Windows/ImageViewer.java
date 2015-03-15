@@ -2,11 +2,14 @@ package Windows;
 
 import Controler.Controller;
 import Model.Image;
+import Windows.International.InternationalButton;
 import Windows.International.InternationalLabel;
 import org.imgscalr.Scalr;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 /**
@@ -21,6 +24,8 @@ public class ImageViewer extends JFrame {
     private String ImageName;
     private Controller controller;
     private static final String localizationKey = "details";
+
+    private JTextArea descriptionArea;
 
     public ImageViewer(String Image, Controller controller) throws HeadlessException {
         this.setTitle(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(localizationKey));
@@ -108,6 +113,7 @@ public class ImageViewer extends JFrame {
         descriptionPanel.add(descriptionLabel, constraints);
 
         JTextArea descriptionTextArea = new JTextArea(controller.getImage(getImageName()).getDescription());
+        descriptionArea = descriptionTextArea;
 
         constraints.gridy = 1;
         constraints.weighty = 0.8;
@@ -143,6 +149,32 @@ public class ImageViewer extends JFrame {
 
         controls.add(tagPanel, constraints);
 
+        // Panneau Boutons
+
+        JPanel controlButtonsPanal = new JPanel(new GridBagLayout());
+
+        InternationalButton saveButton = new InternationalButton("save");
+        saveButton.addActionListener(new SaveButtonListener());
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+
+        controlButtonsPanal.add(saveButton, constraints);
+
+        InternationalButton cancelButton = new InternationalButton("cancel");
+        cancelButton.addActionListener(new CancelButtonListener());
+
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+
+        controlButtonsPanal.add(cancelButton, constraints);
+
+        constraints.gridx = 3;
+        constraints.gridy = 0;
+        constraints.weighty = constraints.weightx = 1;
+
+        controls.add(controlButtonsPanal, constraints);
+
         return controls;
     }
 
@@ -152,5 +184,25 @@ public class ImageViewer extends JFrame {
 
     public void setImageName(String imageName) {
         ImageName = imageName;
+    }
+
+    private class SaveButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            controller.saveImageDescription(ImageName, descriptionArea.getText());
+        }
+    }
+
+    private class CancelButtonListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Container frame = ((InternationalButton) e.getSource()).getParent();
+            do
+                frame = frame.getParent();
+            while (!(frame instanceof JFrame));
+            ((JFrame) frame).dispose();
+        }
     }
 }
