@@ -3,9 +3,12 @@ package Controler;
 import Model.Image;
 import Model.ImageList;
 import Resources.Languages;
+import Windows.Utils.FontChanger;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.Imaging;
 
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -32,13 +35,16 @@ public class Controller {
         switch (language) {
             case ENGLISH:
                 currentLocale = Locale.US;
+                FontChanger.setUIFont(new FontUIResource(new Font("Tahoma", 0, 20)));
                 break;
             case FRENCH:
                 currentLocale = Locale.FRANCE;
+                FontChanger.setUIFont(new FontUIResource(new Font("Tahoma", 0, 20)));
                 break;
             case JAPANESE:
             //ça bugguai j'ai mis en comment
                 currentLocale = Locale.JAPAN;
+                FontChanger.setUIFont(new FontUIResource(new Font("BokutachinoGothic2Regular", 0, 20)));
                 break;
 
         }
