@@ -16,6 +16,7 @@ public class ImageList extends Observable {
 
     public ImageList() {
         ImageList = new ArrayList<>();
+        tags = new HashSet<>();
     }
 
     public ArrayList<Image> getImageList() {

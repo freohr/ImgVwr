@@ -11,6 +11,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 /**
@@ -156,8 +157,11 @@ public class ImageViewer extends JFrame {
         constraints.weighty = 0.1;
         tagPanel.add(tagLabel, constraints);
 
-        JPanel tagList = new JPanel();
-        tagList.add(new InternationalLabel("tagList"));
+        JPanel tagList = new JPanel(new GridBagLayout());
+
+        HashSet<String> tagSet = controller.getImage(getImageName()).getTags();
+
+        tagSet.stream().forEach(tag -> tagList.add(new JLabel(tag), constraints));
 
         constraints.gridy = 1;
         constraints.weighty = 1.5;

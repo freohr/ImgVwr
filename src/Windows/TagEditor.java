@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 
@@ -27,8 +28,8 @@ public class TagEditor extends JFrame {
 
     private final String imageName;
     private Controller controller;
-    private JTextArea tagsArea;
 
+    private JPanel tagList;
 
     public TagEditor(String imageName, Controller controller) throws HeadlessException {
         this.imageName = imageName;
@@ -60,11 +61,6 @@ public class TagEditor extends JFrame {
         c.weightx = 0.1;
         container.add(side, c);
 
-
-
-
-
-
         this.add(container);
     }
 
@@ -83,15 +79,20 @@ public class TagEditor extends JFrame {
 
         tags.add(tagsLabel, c);
 
-        JTextArea tagsTextArea = new JTextArea();
-        tagsArea = tagsTextArea;
+        JPanel tagsTextArea = new JPanel(new GridBagLayout());
+
+        tagList = tagsTextArea;
+        tagsTextArea.setBorder(BorderFactory.createEtchedBorder());
+
+        tagsTextArea.setSize(600, 600);
 
         c.gridx = 0;
         c.gridy = 1;
-        c.weighty = 0.8;
+        c.weighty = 1;
+        c.weightx = 1;
 
+        updateTagList();
         tags.add(tagsTextArea, c);
-
 
         Border black = BorderFactory.createLineBorder(Color.lightGray, 1);
         tags.setBorder(black);
@@ -100,35 +101,42 @@ public class TagEditor extends JFrame {
     }
 
     private JPanel initSidebar() {
-
-
         JPanel sideBar = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = c.gridy = 0;
         c.gridheight = 1;
         c.gridwidth = 1;
+        c.weighty = c.weightx = 1;
         c.fill = GridBagConstraints.BOTH;
+
+        JPanel buttonPanel = new JPanel(new GridBagLayout());
+
+        c.insets = new Insets(10, 10, 10, 10);
 
         // Add Button
         JButton addButton = new InternationalButton("addTag");
         addButton.addActionListener(new addButtonListener());
 
-        sideBar.add(addButton, c);
+        buttonPanel.add(addButton, c);
 
         // Edit Button
         JButton saveButton = new InternationalButton("editTag");
         saveButton.addActionListener(new saveButtonListener());
 
         c.gridy = 1;
-        sideBar.add(saveButton, c);
+        buttonPanel.add(saveButton, c);
 
         // Delete Button
         JButton deleteButton = new InternationalButton("deleteTag");
         deleteButton.addActionListener(new deleteButtonListener());
 
         c.gridy = 2;
-        sideBar.add(deleteButton, c);
+        buttonPanel.add(deleteButton, c);
+
+        c.insets = new Insets(60, 0, 60, 0);
+
+        sideBar.add(buttonPanel, c);
 
 
         return sideBar;
@@ -138,19 +146,45 @@ public class TagEditor extends JFrame {
         return imageName;
     }
 
+    private void updateTagList() {
+
+        HashSet<String> tagSet = controller.getImage(getImageName()).getTags();
+
+        GridBagConstraints constraints = new GridBagConstraints();
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.weighty = constraints.weightx = 1;
+
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+
+        tagSet.stream().forEach(tag -> {
+            constraints.gridy++;
+
+            tagList.add(new JLabel(tag), constraints);
+        });
+
+        tagList.revalidate();
+        tagList.repaint();
+    }
+
     private class addButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
             try {
-                controller.getImage(getImageName()).addTag(tagsArea.getText());
+                String tag = JOptionPane.showInputDialog(ResourceBundle.getBundle("Resources.LabelBundle").getString("addATag"));
+
+                controller.getImage(getImageName()).addTag(tag);
+
+                updateTagList();
             } catch (Exception ex) {
 
             }
-
         }
     }
+
 
     private class saveButtonListener implements ActionListener {
 
