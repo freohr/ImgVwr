@@ -84,6 +84,7 @@ public class TagEditor extends JFrame {
         InternationalLabel descriptionLabel = new InternationalLabel("tags");
         c.gridy = c.gridx = 0;
         c.weighty = 0.2;
+        c.weightx = 1;
 
         tagsPanel.add(descriptionLabel, c);
 
@@ -92,6 +93,7 @@ public class TagEditor extends JFrame {
         tagsArea = tagsTextArea;
 
         c.gridy = 1;
+        c.weightx = 1;
         c.weighty = 0.8;
 
         tagsPanel.add(tagsTextArea, c);
@@ -99,7 +101,8 @@ public class TagEditor extends JFrame {
 
         c.gridx = 0;
         c.gridy = 0;
-        c.weighty = c.weightx = 0.8;
+        c.weighty =1;
+        c.weightx = 0.8;
 
         controls.add(tagsPanel, c);
 
@@ -135,7 +138,8 @@ public class TagEditor extends JFrame {
 
         c.gridx = 1;
         c.gridy = 0;
-        c.weighty = c.weightx = 0.2;
+        c.weighty =1;
+        c.weightx = 0.2;
 
         controls.add(sideBar, c);
 
