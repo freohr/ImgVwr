@@ -1,12 +1,12 @@
 package Model;
 
 import org.apache.commons.io.FilenameUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.json.JSONString;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 
 /**
@@ -17,6 +17,7 @@ public class Image implements JSONString {
     public BufferedImage file;
     public String description;
     public String title;
+    public String path;
     public HashSet<String> tags;
 
     public Image(BufferedImage image) {
@@ -24,15 +25,42 @@ public class Image implements JSONString {
         this.description = "";
         this.tags = new HashSet<>();
         this.title = "";
+        this.path = "";
     }
 
     public Image(BufferedImage file, String title) {
         this(file);
         this.title = title;
 
-        String descFileName = FilenameUtils.removeExtension(title) + ".txt";
+        String descFileName = FilenameUtils.removeExtension(title) + ".json";
 
         // TODO : Read from JSON File
+
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(descFileName));
+
+            String line;
+            String jsonString = "";
+
+            while ((line = reader.readLine()) != null) {
+                jsonString += line;
+            }
+
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            description = (String) jsonObject.get("description");
+
+            JSONArray tags = ((JSONArray) jsonObject.get("tags"));
+
+            for (int i = 0; i < tags.length(); i++) {
+                this.tags.add((String) tags.get(i));
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // Getters
@@ -57,7 +85,7 @@ public class Image implements JSONString {
     public void setDescription(String description) {
         this.description = description;
 
-        String descFileName = FilenameUtils.removeExtension(title) + ".txt";
+        WriteToFile();
     }
 
     public void setTitle(String title) {
@@ -88,7 +116,7 @@ public class Image implements JSONString {
         // Deuxième membre : tags
         builder.append("\"tags\":");
 
-        // On crée le tableau de tags
+        // On append le tableau de tags
         builder.append("[");
 
         for (String tag : tags) {
@@ -96,7 +124,6 @@ public class Image implements JSONString {
         }
 
         builder.append("]");
-
 
         builder.append("}");
 
