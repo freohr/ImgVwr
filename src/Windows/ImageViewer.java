@@ -1,7 +1,10 @@
 package Windows;
 
+import Controler.Controller;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.ResourceBundle;
 
 /**
  * Created by stephen on 09/02/2015.
@@ -13,9 +16,10 @@ import java.awt.*;
 public class ImageViewer extends JFrame {
 
     private String ImageName;
+    private static final String localizationKey = "details";
 
     public ImageViewer(String Image) throws HeadlessException {
-        this.setTitle("ImageViewer");
+        this.setTitle(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(localizationKey));
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.ImageName = Image;

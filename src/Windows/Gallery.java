@@ -14,12 +14,15 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.ResourceBundle;
 
 /**
  * Created by stephen on 09/02/2015.
  */
 public class Gallery extends JFrame implements Observer {
     public Controller controller;
+
+    private static final String localizationKey = "gallery";
 
     public JScrollPane ImagePanel;
     public JScrollPane TagPane;
@@ -37,7 +40,7 @@ public class Gallery extends JFrame implements Observer {
         this.controller = controller;
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setTitle("Gallerie");
+        this.setTitle(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(localizationKey));
         this.setSize(800, 600);
 
         this.setPreferredSize(new Dimension(800, 600));
@@ -287,6 +290,8 @@ public class Gallery extends JFrame implements Observer {
             c.updateText();
             c.repaint();
         });
+
+        this.setTitle(ResourceBundle.getBundle("Resources.LabelBundle", Controller.getCurrentLocale()).getString(localizationKey));
     }
 
     // Events Listeners
