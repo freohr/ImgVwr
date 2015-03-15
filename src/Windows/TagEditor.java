@@ -60,12 +60,42 @@ public class TagEditor extends JFrame {
         c.weightx = 0.1;
         container.add(side, c);
 
+
+
+
+
+
         this.add(container);
     }
 
     private JPanel initTagWindow() {
 
-        JPanel tags = new JPanel();
+        JPanel tags = new JPanel(new GridBagLayout());
+
+        GridBagConstraints c = new GridBagConstraints();
+        //1/2 panels tags
+        JPanel tagsPanel = new JPanel(new GridBagLayout());
+
+        InternationalLabel tagsLabel = new InternationalLabel("tags");
+        c.gridy = c.gridx = 0;
+        c.weighty = 0.2;
+
+        tagsPanel.add(tagsLabel, c);
+
+        JTextArea tagsTextArea = new JTextArea();
+        tagsArea = tagsTextArea;
+
+        c.gridy = 1;
+        c.weighty = 1;
+
+        tagsPanel.add(tagsTextArea, c);
+
+        c.gridx = 0;
+        c.gridy = 1;
+        c.weighty =1;
+        c.weightx = 0.8;
+
+        tags.add(tagsPanel, c);
 
         Border black = BorderFactory.createLineBorder(Color.lightGray, 1);
         tags.setBorder(black);
@@ -75,41 +105,9 @@ public class TagEditor extends JFrame {
 
     private JPanel initSidebar() {
 
-        JPanel controls = new JPanel(new GridBagLayout());
 
-        //1/2 panels tags
-        JPanel tagsPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-
-        InternationalLabel descriptionLabel = new InternationalLabel("tags");
-        c.gridy = c.gridx = 0;
-        c.weighty = 0.2;
-        c.weightx = 1;
-
-        tagsPanel.add(descriptionLabel, c);
-
-        JTextArea tagsTextArea = new JTextArea();
-        //controller.getImage(getImageName()).getTags();
-        tagsArea = tagsTextArea;
-
-        c.gridy = 1;
-        c.weightx = 1;
-        c.weighty = 0.8;
-
-        tagsPanel.add(tagsTextArea, c);
-
-
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weighty =1;
-        c.weightx = 0.8;
-
-        controls.add(tagsPanel, c);
-
-        //2/2 panel buttons
         JPanel sideBar = new JPanel(new GridBagLayout());
-
-
+        GridBagConstraints c = new GridBagConstraints();
 
         c.gridx = c.gridy = 0;
         c.gridheight = 1;
@@ -136,14 +134,8 @@ public class TagEditor extends JFrame {
         c.gridy = 2;
         sideBar.add(deleteButton, c);
 
-        c.gridx = 1;
-        c.gridy = 0;
-        c.weighty =1;
-        c.weightx = 0.2;
 
-        controls.add(sideBar, c);
-
-        return controls;
+        return sideBar;
     }
 
     public String getImageName() {
@@ -155,6 +147,11 @@ public class TagEditor extends JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            try {
+                controller.getImage(getImageName()).addTag(tagsArea.getText());
+            } catch (Exception ex) {
+
+            }
 
         }
     }
