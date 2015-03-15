@@ -2,7 +2,7 @@ package Windows;
 
 import Controler.Controller;
 import Windows.International.InternationalButton;
-import com.sun.xml.internal.fastinfoset.util.StringArray;
+import Windows.International.InternationalLabel;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -11,10 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 
@@ -31,6 +27,7 @@ public class TagEditor extends JFrame {
 
     private final String imageName;
     private Controller controller;
+    private JTextArea tagsArea;
 
 
     public TagEditor(String imageName, Controller controller) throws HeadlessException {
@@ -73,39 +70,6 @@ public class TagEditor extends JFrame {
         Border black = BorderFactory.createLineBorder(Color.lightGray, 1);
         tags.setBorder(black);
 
-
-        String temp = null;
-        String line = null;
-
-        temp = this.imageName.substring(0, this.imageName.lastIndexOf('.'));
-
-        ArrayList<String> tempArray = new ArrayList<String>();
-
-        File myFile = new File(temp + "txt");
-
-        if (!myFile.exists()) {
-
-            try {
-                myFile.createNewFile();
-
-            } catch (Exception ex) {
-            }
-            ;
-
-
-        } else {
-            try (BufferedReader reader = new BufferedReader(new FileReader(myFile));) {
-                line = reader.readLine();
-                while (line != null) {
-                    tempArray.add(line);
-                    line = reader.readLine();
-                }
-            } catch (Exception ex) {
-            }
-            ;
-
-        }
-
         return tags;
     }
 
@@ -118,7 +82,6 @@ public class TagEditor extends JFrame {
         c.gridheight = 1;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.BOTH;
-
 
         // Add Button
         JButton addButton = new InternationalButton("addTag");
@@ -140,13 +103,41 @@ public class TagEditor extends JFrame {
         c.gridy = 2;
         sideBar.add(deleteButton, c);
 
+        JPanel descriptionPanel = new JPanel(new GridBagLayout());
+
+        InternationalLabel descriptionLabel = new InternationalLabel("description");
+        c.gridy = c.gridx = 0;
+        c.weighty = 0.2;
+
+        descriptionPanel.add(descriptionLabel, c);
+
+        JTextArea tagsTextArea = new JTextArea();
+        controller.getImage(getImageName()).getTags()
+        tagsArea = tagsTextArea;
+
+        c.gridy = 1;
+        c.weighty = 0.8;
+
+        descriptionPanel.add(tagsTextArea, c);
+
+        c.gridx = 1;
+        c.gridy = 0;
+        c.weighty = c.weightx = 1;
+
+        sideBar.add(descriptionPanel, c);
+
         return sideBar;
+    }
+
+    public String getImageName() {
+        return imageName;
     }
 
     private class addButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
 
         }
     }
