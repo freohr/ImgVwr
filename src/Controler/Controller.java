@@ -36,10 +36,10 @@ public class Controller {
             case FRENCH:
                 currentLocale = Locale.FRANCE;
                 break;
-            /*case JAPANESE:
+            case JAPANESE:
             //ça bugguai j'ai mis en comment
-                currentLocale = Locale.JAPANESE;
-                break;*/
+                currentLocale = Locale.JAPAN;
+                break;
 
         }
     }
