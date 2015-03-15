@@ -17,6 +17,7 @@ public class Image implements JSONString {
     public BufferedImage file;
     public String description;
     public String title;
+    public String path;
     public HashSet<String> tags;
 
     public Image(BufferedImage image) {
@@ -24,6 +25,7 @@ public class Image implements JSONString {
         this.description = "";
         this.tags = new HashSet<>();
         this.title = "";
+        this.path = "";
     }
 
     public Image(BufferedImage file, String title) {
@@ -57,7 +59,7 @@ public class Image implements JSONString {
     public void setDescription(String description) {
         this.description = description;
 
-        String descFileName = FilenameUtils.removeExtension(title) + ".txt";
+        WriteToFile();
     }
 
     public void setTitle(String title) {
@@ -88,7 +90,7 @@ public class Image implements JSONString {
         // Deuxième membre : tags
         builder.append("\"tags\":");
 
-        // On crée le tableau de tags
+        // On append le tableau de tags
         builder.append("[");
 
         for (String tag : tags) {
@@ -96,7 +98,6 @@ public class Image implements JSONString {
         }
 
         builder.append("]");
-
 
         builder.append("}");
 

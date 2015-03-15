@@ -190,7 +190,11 @@ public class ImageViewer extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            controller.saveImageDescription(ImageName, descriptionArea.getText());
+            try {
+                controller.saveImageDescription(ImageName, descriptionArea.getText());
+            } catch (Exception ex) {
+
+            }
         }
     }
 
