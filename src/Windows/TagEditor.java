@@ -139,7 +139,7 @@ public class TagEditor extends JFrame {
 
         controls.add(sideBar, c);
 
-        return sideBar;
+        return controls;
     }
 
     public String getImageName() {
