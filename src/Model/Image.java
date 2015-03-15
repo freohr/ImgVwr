@@ -56,6 +56,8 @@ public class Image implements JSONString {
                 this.tags.add((String) tags.get(i));
             }
 
+            //change de test
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
