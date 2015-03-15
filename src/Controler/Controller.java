@@ -64,8 +64,7 @@ public class Controller {
 
         for (File img : fileArrays) {
             try {
-
-                images.put(img.getName(), Imaging.getBufferedImage(img));
+                images.put(img.getAbsolutePath(), Imaging.getBufferedImage(img));
             } catch (ImageReadException e) {
                 e.printStackTrace();
             } catch (IOException e) {

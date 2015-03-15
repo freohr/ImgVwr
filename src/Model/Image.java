@@ -28,13 +28,16 @@ public class Image implements JSONString {
         this.path = "";
     }
 
-    public Image(BufferedImage file, String title) {
+    public Image(BufferedImage file, String path) {
         this(file);
+
+        String title = FilenameUtils.getName(path);
+        String fullpath = FilenameUtils.getFullPath(path);
+
         this.title = title;
+        this.path = fullpath;
 
-        String descFileName = FilenameUtils.removeExtension(title) + ".json";
-
-        // TODO : Read from JSON File
+        String descFileName = FilenameUtils.removeExtension(path) + ".json";
 
         try {
             BufferedReader reader = new BufferedReader(new FileReader(descFileName));
@@ -135,7 +138,7 @@ public class Image implements JSONString {
     public void WriteToFile() {
         String jsonContent = toJSONString();
 
-        String fileName = FilenameUtils.removeExtension(title) + ".json";
+        String fileName = path + FilenameUtils.removeExtension(title) + ".json";
 
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
