@@ -73,29 +73,25 @@ public class TagEditor extends JFrame {
         JPanel tags = new JPanel(new GridBagLayout());
 
         GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.gridheight = c.gridwidth = 1;
         //1/2 panels tags
-        JPanel tagsPanel = new JPanel(new GridBagLayout());
 
         InternationalLabel tagsLabel = new InternationalLabel("tags");
         c.gridy = c.gridx = 0;
         c.weighty = 0.2;
 
-        tagsPanel.add(tagsLabel, c);
+        tags.add(tagsLabel, c);
 
         JTextArea tagsTextArea = new JTextArea();
         tagsArea = tagsTextArea;
 
-        c.gridy = 1;
-        c.weighty = 1;
-
-        tagsPanel.add(tagsTextArea, c);
-
         c.gridx = 0;
         c.gridy = 1;
-        c.weighty =1;
-        c.weightx = 0.8;
+        c.weighty = 0.8;
 
-        tags.add(tagsPanel, c);
+        tags.add(tagsTextArea, c);
+
 
         Border black = BorderFactory.createLineBorder(Color.lightGray, 1);
         tags.setBorder(black);
