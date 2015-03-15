@@ -9,10 +9,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.io.FileReader;
+import java.io.BufferedReader;
+
+
 
 /**
  * Created by stephen on 09/02/2015.
  */
+
+/**
+ * modified by remy on 12/02/2015.
+ */
+
 public class TagEditor extends JFrame {
 
 
@@ -36,6 +46,7 @@ public class TagEditor extends JFrame {
         c.gridx = c.gridy = 0;
 
         c.weightx = 0.9;
+        c.weighty = 1;
         container.add(tags, c);
 
         c.gridx = 1;
@@ -92,6 +103,10 @@ public class TagEditor extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            public String path;
+
+            //#PROGRESS remy
+            path = "";
 
         }
     }

@@ -16,6 +16,10 @@ import java.util.Locale;
 /**
  * Created by stephen on 11/02/2015.
  */
+
+/**
+ * modified by remy on 15/03/2015.
+ */
 public class Controller {
     public ImageList Model;
     public static Locale currentLocale;
@@ -32,6 +36,11 @@ public class Controller {
             case FRENCH:
                 currentLocale = Locale.FRANCE;
                 break;
+            /*case JAPANESE:
+            //ça bugguai j'ai mis en comment
+                currentLocale = Locale.JAPANESE;
+                break;*/
+
         }
     }
 
