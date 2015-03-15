@@ -10,5 +10,6 @@
     <orderEntry type="library" name="commons-io-2" level="project" />
     <orderEntry type="library" name="commons_imaging_jar" level="project" />
     <orderEntry type="library" name="imgscalr" level="project" />
+    <orderEntry type="library" name="JSON_Java" level="project" />
   </component>
 </module>
