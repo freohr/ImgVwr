@@ -361,7 +361,7 @@ public class Gallery extends JFrame implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            TagEditor tagEditor = new TagEditor();
+            TagEditor tagEditor = new TagEditor(selectedThumbnail.getImageTitle(), controller);
 
             tagEditor.setVisible(true);
         }
